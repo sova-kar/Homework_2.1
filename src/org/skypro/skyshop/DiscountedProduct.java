@@ -9,6 +9,38 @@ public class DiscountedProduct extends Product {
     private int basePrice;
     private int discount;
 
+    public DiscountedProduct(String name, int basePrice, int discount) {
+        super(name);
+        if (basePrice <= 0) {
+            throw new IllegalArgumentException("Цена должна быть больше 0.");
+        }
+        this.basePrice = basePrice;
+
+        if (discount < 0 || discount > 100) {
+            throw new IllegalArgumentException("Скидка должна быть больше, либо равна 0 и меньше, либо равна 100.");
+        }
+        this.discount = discount;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    @Override
+    public int getPrice() {
+        return (basePrice * (100 - discount) / 100);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Скидка: " + discount + "%";
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -21,26 +53,5 @@ public class DiscountedProduct extends Product {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), basePrice, discount);
-    }
-
-    public DiscountedProduct(String name, int basePrice, int discount) {
-        super(name, basePrice);
-        this.basePrice = basePrice;
-        this.discount = discount;
-    }
-
-    @Override
-    public int getPrice() {
-        return (basePrice * (100 - discount) / 100);
-    }
-
-    @Override
-    public String toString() {
-        return getName() + ": " + getPrice() + " (" + discount + "%)";
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return true;
     }
 }
