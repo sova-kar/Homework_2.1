@@ -8,6 +8,18 @@ public class Product implements Searchable {
     private String name;
     private int cost;
 
+    public Product(String name, int cost) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Название продукта не может быть пустым.");
+        }
+        this.name = name;
+        this.cost = cost;
+    }
+
+    public Product(String name) {
+        this(name, 0);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -21,11 +33,6 @@ public class Product implements Searchable {
         return Objects.hash(name, cost);
     }
 
-    public Product(String name, int cost) {
-        this.name = name;
-        this.cost = cost;
-    }
-
     public int getCost() {
         return cost;
     }
@@ -34,6 +41,7 @@ public class Product implements Searchable {
     public String getSearchTerm() {
         return name;
     }
+
     @Override
     public String getContentType() {
         return "PRODUCT";
@@ -44,10 +52,16 @@ public class Product implements Searchable {
         return name;
     }
 
-    public int getPrice(){
+    public int getPrice() {
         return cost;
     }
-    public boolean isSpecial(){
+
+    public boolean isSpecial() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Продукт: " + name;
     }
 }

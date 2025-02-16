@@ -9,21 +9,8 @@ public class ProductBasket {
     private Product[] products;
     private int count;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductBasket that = (ProductBasket) o;
-        return count == that.count && Objects.deepEquals(products, that.products);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(Arrays.hashCode(products), count);
-    }
-
     public ProductBasket() {
-        products = new Product[8];
+        products = new Product[15];
         count = 0;
     }
 
@@ -78,6 +65,19 @@ public class ProductBasket {
             products[i] = null;
         }
         count = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductBasket that = (ProductBasket) o;
+        return count == that.count && Objects.deepEquals(products, that.products);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(products), count);
     }
 }
 
