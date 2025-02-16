@@ -2,70 +2,57 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.product.BestResultNotFound;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SearchEngine {
+    private final List<Searchable> searchables;
 
-    private final Searchable[] searchables;
-    private int count;
-
-    public SearchEngine(int capacity) {
-        searchables = new Searchable[capacity];
-        count = 0;
-
+    public SearchEngine() {
+        this.searchables = new ArrayList<>();
     }
 
     public void add(Searchable searchable) {
-        if (count < searchables.length) {
-            searchables[count] = searchable;
-            count++;
-        } else {
-            System.out.println("Поисковой движок переполнен");
-        }
+        searchables.add(searchable);
     }
 
-    public Searchable[] search(String query) {
-        Searchable[] results = new Searchable[5];
-        int foundCount = 0;
-        for (int i = 0; i < count; i++) {
-            if (searchables[i].getSearchTerm().contains(query)) {
-                results[foundCount] = searchables[i];
-                foundCount++;
-                if (foundCount == 5) {
-                    break;
-                }
+    public List<Searchable> search(String query) {
+        List<Searchable> results = new ArrayList<>();
+        for (Searchable searchable : searchables) {
+            if (searchable.getSearchTerm().contains(query)) {
+                results.add(searchable);
             }
         }
         return results;
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
-        if (search == null || search.isBlank()) {
-            throw new IllegalArgumentException("Для поискового запроса '" + search + "' ничего не найдено.");
+        if (searchables.isEmpty()) {
+            throw new BestResultNotFound("Для поискового запроса '" + search + "' не найдено подходящих результатов.");
         }
+
         Searchable bestMatch = null;
         int maxCount = -1;
 
-        for (Searchable item : searchables) {
-            if (item != null) {
-                String searchTerm = item.getSearchTerm();
-                int count = countRepetitions(searchTerm, search);
+        for (Searchable searchable : searchables) {
+            String searchTerm = searchable.getSearchTerm();
+            int count = countOccurrences(searchTerm, search);
 
-                if (count > maxCount) {
-                    maxCount = count;
-                    bestMatch = item;
-                }
-            }
-
-            if (bestMatch == null) {
-                throw new BestResultNotFound("Для поискового запроса '" + search + "' ничего не  найдено.");
+            if (count > maxCount) {
+                maxCount = count;
+                bestMatch = searchable;
             }
         }
+
+        if (bestMatch == null) {
+            throw new BestResultNotFound("Для поискового запроса '" + search + "' не найдено подходящих результатов.");
+        }
+
         return bestMatch;
     }
 
-    private int countRepetitions(String str, String substring) {
+    private int countOccurrences(String str, String substring) {
         int count = 0;
         int index = 0;
         int substringLength = substring.length();
@@ -78,18 +65,16 @@ public class SearchEngine {
         return count;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SearchEngine that = (SearchEngine) o;
-        return count == that.count && Objects.deepEquals(searchables, that.searchables);
+        return Objects.equals(searchables, that.searchables);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.hashCode(searchables), count);
+        return Objects.hash(searchables);
     }
 }
-
