@@ -50,6 +50,6 @@ public class Article implements Searchable {
 
     @Override
     public String toString() {
-        return "Статья: " + title;
+        return "Статья:  " + title;
     }
 }

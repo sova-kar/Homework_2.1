@@ -140,7 +140,7 @@ public class App {
                 System.out.println(product);
             }
         } else {
-            System.out.println("Список пуст.");
+            System.out.println("Список пуст. ");
         }
 
         System.out.println("Содержимое корзины после удаления:");

@@ -44,7 +44,7 @@ public class SearchEngine {
         }
 
         if (bestMatch == null) {
-            throw new BestResultNotFound("Для поискового запроса '" + search + "' не найдено подходящих результатов.");
+            throw new BestResultNotFound("Для поискового запроса  '" + search + "' не найдено подходящих результатов.");
         }
 
         return bestMatch;

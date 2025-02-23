@@ -36,7 +36,7 @@ public class SimpleProduct extends Product {
 
     @Override
     public String toString() {
-        return "Продукт: " + getName();
+        return "Продукт:  " + getName();
     }
 
     @Override

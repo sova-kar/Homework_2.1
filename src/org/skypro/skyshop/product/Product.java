@@ -61,6 +61,6 @@ public class Product implements Searchable {
 
     @Override
     public String toString() {
-        return "Продукт: " + name;
+        return "Продукт:  " + name;
     }
 }
