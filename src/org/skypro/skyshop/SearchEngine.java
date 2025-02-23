@@ -2,9 +2,7 @@ package org.skypro.skyshop;
 
 import org.skypro.skyshop.product.BestResultNotFound;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SearchEngine {
     private final List<Searchable> searchables;
@@ -17,11 +15,11 @@ public class SearchEngine {
         searchables.add(searchable);
     }
 
-    public List<Searchable> search(String query) {
-        List<Searchable> results = new ArrayList<>();
+    public Map<String, Searchable> search(String query) {
+        Map<String, Searchable> results = new TreeMap<>(); // TreeMap для сортировки по ключу
         for (Searchable searchable : searchables) {
             if (searchable.getSearchTerm().contains(query)) {
-                results.add(searchable);
+                results.put(searchable.getName(), searchable);
             }
         }
         return results;
