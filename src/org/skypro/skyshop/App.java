@@ -6,6 +6,7 @@ import org.skypro.skyshop.product.Product;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -54,6 +55,7 @@ public class App {
         searchEngine.add(new Article("Недооцененный продукт", "Народные рецепты использования крахмала"));
         searchEngine.add(new Article("Ягода года", "Полезные свойства клубники"));
 
+HW_7
 //        try {
 //            Searchable bestMatch = searchEngine.findBestMatch("1000 рецептов");
 //            System.out.println("Найден лучший продукт: " + bestMatch.toString());
@@ -68,6 +70,19 @@ public class App {
 //            System.out.println("Ошибка" + e.getMessage());
 //        }
 
+        System.out.println("Результаты поиска по запросу 'Капуста':");
+        Map<String, Searchable> results = searchEngine.search("Капуста");
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            System.out.println(entry.getValue().toString());
+        }
+
+        System.out.println("Результаты поиска по запросу 'Крахмал':");
+        results = searchEngine.search("Крахмал");
+        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
+            System.out.println(entry.getValue().toString());
+        }
+ master
+
 //        try {
 //            Searchable bestMatch = searchEngine.findBestMatch("");
 //            System.out.println("Найден лучший продукт: " + bestMatch.getName());
@@ -76,6 +91,7 @@ public class App {
 //        }
 //        System.out.println("Проверка завершена");
 
+HW_7
         System.out.println("Результаты поиска по запросу 'К':");
         Set<Searchable> results = searchEngine.search("К");
         if (results.isEmpty()) {
@@ -106,6 +122,37 @@ public class App {
             }
         }
 
+//        System.out.println("Результаты поиска по запросу 'Крахмал':");
+//        List<Searchable> results = searchEngine.search("Крахмал");
+//        if (results.isEmpty()) {
+//            System.out.println("Ничего не найдено.");
+//        } else {
+//            for (Searchable result : results) {
+//                System.out.println(result.toString());
+//            }
+//        }
+//
+//        System.out.println("Результаты поиска по запросу 'Клубника':");
+//        results = searchEngine.search("Клубника");
+//        if (results.isEmpty()) {
+//            System.out.println("Ничего не найдено.");
+//        } else {
+//            for (Searchable result : results) {
+//                System.out.println(result.toString());
+//            }
+//        }
+//
+//        System.out.println("Результаты поиска по запросу 'Тыква':");
+//        results = searchEngine.search("Тыква");
+//        if (results.isEmpty()) {
+//            System.out.println("Ничего не найдено.");
+//        } else {
+//            for (Searchable result : results) {
+//                System.out.println(result.toString());
+//            }
+//        }
+ master
+
         basket.addProduct(apple);
         basket.addProduct(bread);
         basket.addProduct(milk);
@@ -132,8 +179,13 @@ public class App {
         System.out.println("Содержимое корзины после удаления:");
         basket.printBasket();
 
+ HW_7
         System.out.println("Удаление продукта 'Ананас':");
         removedProducts = basket.removeProductByName("Ананас");
+
+        System.out.println("Удаление продукта 'Картошка':");
+        removedProducts = basket.removeProductByName("Картошка");
+ master
         if (removedProducts != null && !removedProducts.isEmpty()) {
             System.out.println("Удаленные продукты:");
             for (Product product : removedProducts) {

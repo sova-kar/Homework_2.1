@@ -2,41 +2,30 @@ package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ProductBasket {
-    private List<Product> products;
+    private Map<String, List<Product>> products;
 
     public ProductBasket() {
-        this.products = new ArrayList<>();
+        this.products = new HashMap<>();
     }
 
     public void addProduct(Product product) {
-        products.add(product);
+        String name = product.getName();
+        products.computeIfAbsent(name, k -> new ArrayList<>()).add(product);
     }
 
     public List<Product> removeProductByName(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-        Iterator<Product> iterator = products.iterator();
-
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getName().equals(name)) {
-                removedProducts.add(product);
-                iterator.remove();
-            }
-        }
-
-        return removedProducts;
+        return products.remove(name);
     }
 
     public double getTotalCost() {
         double totalCost = 0;
-        for (Product product : products) {
-            totalCost += product.getPrice();
+        for (List<Product> productList : products.values()) {
+            for (Product product : productList) {
+                totalCost += product.getPrice();
+            }
         }
         return totalCost;
     }
@@ -46,10 +35,12 @@ public class ProductBasket {
             System.out.println("В корзине пусто");
         } else {
             int specialCount = 0;
-            for (Product product : products) {
-                System.out.println(product.toString());
-                if (product.isSpecial()) {
-                    specialCount++;
+            for (Map.Entry<String, List<Product>> entry : products.entrySet()) {
+                for (Product product : entry.getValue()) {
+                    System.out.println(product.toString());
+                    if (product.isSpecial()) {
+                        specialCount++;
+                    }
                 }
             }
             System.out.println("Итого: " + getTotalCost());
@@ -58,12 +49,7 @@ public class ProductBasket {
     }
 
     public boolean containsProduct(String productName) {
-        for (Product product : products) {
-            if (product.getName().equals(productName)) {
-                return true;
-            }
-        }
-        return false;
+        return products.containsKey(productName);
     }
 
     public void clearBasket() {
