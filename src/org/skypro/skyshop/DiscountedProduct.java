@@ -33,7 +33,7 @@ public class DiscountedProduct extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + ", Скидка: " + discount + "%";
+        return "Продукт: " + getName();
     }
 
     @Override
