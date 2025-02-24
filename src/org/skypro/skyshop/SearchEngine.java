@@ -15,13 +15,13 @@ public class SearchEngine {
         searchables.add(searchable);
     }
 
- HW_7
+ 
     public Set<Searchable> search(String query) {
         Set<Searchable> results = new TreeSet<>(new SearchableComparator());
 
     public Map<String, Searchable> search(String query) {
         Map<String, Searchable> results = new TreeMap<>(); // TreeMap для сортировки по ключу
- master
+ 
         for (Searchable searchable : searchables) {
             if (searchable.getSearchTerm().contains(query)) {
                 results.put(searchable.getName(), searchable);
