@@ -21,31 +21,26 @@ public class ProductBasket {
     }
 
     public double getTotalCost() {
-        double totalCost = 0;
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                totalCost += product.getPrice();
-            }
-        }
-        return totalCost;
+        return products.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
     public void printBasket() {
-        if (products.isEmpty()) {
-            System.out.println("В корзине пусто");
-        } else {
-            int specialCount = 0;
-            for (Map.Entry<String, List<Product>> entry : products.entrySet()) {
-                for (Product product : entry.getValue()) {
-                    System.out.println(product.toString());
-                    if (product.isSpecial()) {
-                        specialCount++;
-                    }
-                }
-            }
-            System.out.println("Итого: " + getTotalCost());
-            System.out.println("Специальных товаров: " + specialCount);
-        }
+        products.forEach((name, productList) -> {
+            System.out.println(name + ": " + productList.size() + " шт.");
+            productList.forEach(product -> System.out.println("  " + product));
+        });
+
+        int specialCount = getSpecialCount();
+        System.out.println("Количество специальных продуктов: " + specialCount);
+    }
+    private int getSpecialCount() {
+        return (int) products.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean containsProduct(String productName) {

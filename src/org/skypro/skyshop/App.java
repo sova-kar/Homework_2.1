@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BestResultNotFound {
 
         ProductBasket basket = new ProductBasket();
 
@@ -39,45 +39,35 @@ public class App {
         searchEngine.add(new Article("Ягода года", "Полезные свойства клубники"));
 
         System.out.println("Результаты поиска по запросу 'Капуста':");
-        Map<String, Searchable> results = searchEngine.search("Капуста");
-        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-            System.out.println(entry.getValue().toString());
-        }
+        Set<Searchable> results = searchEngine.search("Капуста");
+        results.forEach(System.out::println);
 
         System.out.println("Результаты поиска по запросу 'Крахмал':");
         results = searchEngine.search("Крахмал");
-        for (Map.Entry<String, Searchable> entry : results.entrySet()) {
-            System.out.println(entry.getValue().toString());
-        }
-        
+        results.forEach(System.out::println);
+
         System.out.println("Результаты поиска по запросу 'К':");
-        Set<Searchable> results = searchEngine.search("К");
-        if (results.isEmpty()) {
-            System.out.println("Ничего не найдено.");
-        } else {
-            for (Searchable result : results) {
-                System.out.println(result.toString());
-            }
+        try {
+            results = searchEngine.search("К");
+            results.forEach(System.out::println);
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Результаты поиска по запросу 'Клубника':");
-        results = searchEngine.search("Клубника");
-        if (results.isEmpty()) {
-            System.out.println("Ничего не найдено.");
-        } else {
-            for (Searchable result : results) {
-                System.out.println(result.toString());
-            }
+        try {
+            results = searchEngine.search("Клубника");
+            results.forEach(System.out::println);
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
         }
 
         System.out.println("Результаты поиска по запросу 'Тыква':");
-        results = searchEngine.search("Тыква");
-        if (results.isEmpty()) {
-            System.out.println("Ничего не найдено.");
-        } else {
-            for (Searchable result : results) {
-                System.out.println(result.toString());
-            }
+        try {
+            results = searchEngine.search("Тыква");
+            results.forEach(System.out::println);
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
         }
 
         basket.addProduct(apple);
@@ -105,7 +95,7 @@ public class App {
 
         System.out.println("Содержимое корзины после удаления:");
         basket.printBasket();
-        
+
         System.out.println("Удаление продукта 'Ананас':");
         removedProducts = basket.removeProductByName("Ананас");
 
@@ -123,5 +113,7 @@ public class App {
 
         System.out.println("Содержимое корзины после удаления:");
         basket.printBasket();
+        System.out.println("Общая стоимость: " + basket.getTotalCost());
     }
 }
+
