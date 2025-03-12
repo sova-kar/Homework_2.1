@@ -3,6 +3,7 @@ package org.skypro.skyshop;
 import org.skypro.skyshop.product.BestResultNotFound;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
     private final Set<Searchable> searchables;
@@ -15,24 +16,21 @@ public class SearchEngine {
         searchables.add(searchable);
     }
 
- 
-    public Set<Searchable> search(String query) {
-        Set<Searchable> results = new TreeSet<>(new SearchableComparator());
 
-    public Map<String, Searchable> search(String query) {
-        Map<String, Searchable> results = new TreeMap<>(); // TreeMap для сортировки по ключу
- 
-        for (Searchable searchable : searchables) {
-            if (searchable.getSearchTerm().contains(query)) {
-                results.put(searchable.getName(), searchable);
-            }
+    public Set<Searchable> search(String query) throws BestResultNotFound {
+        Set<Searchable> results = searchables.stream()
+                .filter(searchable -> searchable.getSearchTerm().contains(query))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(new SearchableComparator())));
+
+        if (results.isEmpty()) {
+            throw new BestResultNotFound("Для поискового запроса '" + query + "' ничего не найдено.");
         }
+
         return results;
     }
-
     public Searchable findBestMatch(String search) throws BestResultNotFound {
         if (searchables.isEmpty()) {
-            throw new BestResultNotFound("Для поискового запроса '" + search + "' не найдено подходящих результатов.");
+            throw new BestResultNotFound("Для поискового запроса '" + search + "' ничего не найдено.");
         }
 
         Searchable bestMatch = null;
@@ -49,7 +47,7 @@ public class SearchEngine {
         }
 
         if (bestMatch == null) {
-            throw new BestResultNotFound("Для поискового запроса '" + search + "' не найдено подходящих результатов.");
+            throw new BestResultNotFound("Для поискового запроса '" + search + "'ничего не найдено.");
         }
 
         return bestMatch;
