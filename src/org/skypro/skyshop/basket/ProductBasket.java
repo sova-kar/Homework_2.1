@@ -21,23 +21,24 @@ public class ProductBasket {
     }
 
     public double getTotalCost() {
-        return products.values().stream()
+        return products.values()
+                .stream()
                 .flatMap(List::stream)
                 .mapToInt(Product::getPrice)
                 .sum();
     }
 
     public void printBasket() {
-        products.forEach((name, productList) -> {
-            System.out.println(name + ": " + productList.size() + " шт.");
-            productList.forEach(product -> System.out.println("  " + product));
-        });
-
+        products.values()
+                .stream()
+                .flatMap(List::stream)
+                .forEach(product -> System.out.println(product.getName() + " : " + product));
         int specialCount = getSpecialCount();
         System.out.println("Количество специальных продуктов: " + specialCount);
     }
     private int getSpecialCount() {
-        return (int) products.values().stream()
+        return (int) products.values()
+                .stream()
                 .flatMap(List::stream)
                 .filter(Product::isSpecial)
                 .count();
